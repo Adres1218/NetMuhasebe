@@ -1,0 +1,2366 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>NetMuhasebe - Kişisel Finans Yönetimi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #0ea5e9;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      --light: #f8fafc;
+      --dark: #0f172a;
+      --gray: #64748b;
+      --white: #ffffff;
+      --income: #10b981;
+      --expense: #ef4444;
+      --person: #8b5cf6;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      color: var(--dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%232563eb" stroke-width="0.5" opacity="0.1"/></svg>');
+      z-index: -1;
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 10;
+      animation: fadeInDown 0.8s ease-out;
+    }
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .logo {
+      font-size: 2.5rem;
+    }
+    .tagline {
+      font-size: 1.1rem;
+      font-weight: 300;
+      margin-top: 0.5rem;
+      opacity: 0.9;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: var(--white);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      transition: var(--transition);
+      animation: fadeInUp 0.6s ease-out;
+    }
+    .container:hover {
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+      transform: translateY(-5px);
+    }
+    h2 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 1.8rem;
+      font-weight: 600;
+      font-size: 1.8rem;
+      position: relative;
+      padding-bottom: 0.8rem;
+    }
+    h2::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 2px;
+    }
+    h3 {
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.3rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.6rem;
+      font-weight: 500;
+      color: var(--dark);
+      font-size: 1rem;
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      font-size: 1.05rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      transition: var(--transition);
+      background-color: var(--light);
+      font-family: 'Roboto', sans-serif;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+    }
+    .input-icon {
+      position: relative;
+    }
+    .input-icon i {
+      position: absolute;
+      top: 50%;
+      left: 1.2rem;
+      transform: translateY(-50%);
+      color: var(--gray);
+      font-size: 1.1rem;
+    }
+    .input-icon input {
+      padding-left: 2.8rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 1.8rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      text-align: center;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'Roboto', sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: 0.5s;
+    }
+    .btn:hover::before {
+      left: 100%;
+    }
+    .btn-block {
+      display: block;
+      width: 100%;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--white);
+      box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(37, 99, 235, 0.4);
+    }
+    .btn-success {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: var(--white);
+      box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+    }
+    .btn-success:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(16, 185, 129, 0.4);
+    }
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+      color: var(--white);
+      box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
+    }
+    .btn-danger:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(239, 68, 68, 0.4);
+    }
+    .btn-person {
+      background: linear-gradient(135deg, var(--person), #7c3aed);
+      color: var(--white);
+      box-shadow: 0 4px 6px rgba(139, 92, 246, 0.3);
+    }
+    .btn-person:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(139, 92, 246, 0.4);
+    }
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    .btn-outline:hover {
+      background-color: var(--primary);
+      color: var(--white);
+      transform: translateY(-3px);
+    }
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--primary);
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: inherit;
+      padding: 0;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    .link-btn:hover {
+      color: var(--primary-dark);
+      text-decoration: none;
+    }
+    .center {
+      text-align: center;
+    }
+    .hidden {
+      display: none;
+    }
+    /* Dashboard Styles */
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+    }
+    .logout-btn {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      transition: var(--transition);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+    }
+    .logout-btn:hover {
+      background-color: rgba(239, 68, 68, 0.1);
+    }
+    /* Summary Cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .summary-card {
+      background: var(--white);
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      border-top: 5px solid transparent;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .summary-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+    .summary-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    .summary-card.balance {
+      border-top-color: var(--primary);
+    }
+    .summary-card.income {
+      border-top-color: var(--income);
+    }
+    .summary-card.expense {
+      border-top-color: var(--expense);
+    }
+    .summary-card.people {
+      border-top-color: var(--person);
+    }
+    .summary-card h3 {
+      font-size: 1rem;
+      color: var(--gray);
+      margin-bottom: 0.8rem;
+      justify-content: center;
+      font-weight: 500;
+    }
+    .summary-card .amount {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0.5rem 0;
+    }
+    .summary-card.balance .amount {
+      color: var(--primary);
+    }
+    .summary-card.income .amount {
+      color: var(--income);
+    }
+    .summary-card.expense .amount {
+      color: var(--expense);
+    }
+    .summary-card.people .amount {
+      color: var(--person);
+    }
+    /* Records Table */
+    .records-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.8rem;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .records-table th,
+    .records-table td {
+      padding: 1.2rem;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .records-table th {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+    .records-table tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+    .records-table tr:hover {
+      background-color: #f1f5f9;
+    }
+    .type-badge {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .type-income {
+      background-color: rgba(16, 185, 129, 0.15);
+      color: var(--income);
+    }
+    .type-expense {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: var(--expense);
+    }
+    .type-person {
+      background-color: rgba(139, 92, 246, 0.15);
+      color: var(--person);
+    }
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gray);
+      transition: var(--transition);
+      font-size: 1.1rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+    }
+    .action-btn:hover {
+      color: var(--danger);
+      background-color: rgba(239, 68, 68, 0.1);
+    }
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .tab {
+      padding: 1rem 1.8rem;
+      cursor: pointer;
+      border-bottom: 4px solid transparent;
+      transition: var(--transition);
+      font-weight: 500;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .tab.active {
+      border-bottom-color: var(--primary);
+      color: var(--primary);
+      background-color: rgba(37, 99, 235, 0.05);
+    }
+    .tab:hover:not(.active) {
+      background-color: #f1f5f9;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease-out;
+    }
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+      .summary-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+      .records-table {
+        display: block;
+        overflow-x: auto;
+      }
+      .tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+    @media (max-width: 480px) {
+      .summary-cards {
+        grid-template-columns: 1fr;
+      }
+      header h1 {
+        font-size: 1.8rem;
+      }
+      .tagline {
+        font-size: 0.9rem;
+      }
+    }
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 25px;
+      right: 25px;
+      padding: 1.2rem 1.8rem;
+      background-color: var(--success);
+      color: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transform: translateX(150%);
+      transition: transform 0.4s ease, opacity 0.4s ease;
+      font-weight: 500;
+      max-width: 90%;
+    }
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    .toast.error {
+      background-color: var(--danger);
+    }
+    .toast.warning {
+      background-color: var(--warning);
+    }
+    /* Chart Container */
+    .chart-container {
+      margin: 2.5rem 0;
+      padding: 1.5rem;
+      background: var(--white);
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--gray);
+    }
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      color: #cbd5e1;
+    }
+    /* Filter Controls */
+    .filter-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1.2rem;
+      background-color: #f8fafc;
+      border-radius: 12px;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .filter-group label {
+      font-weight: 500;
+      color: var(--dark);
+    }
+    /* Dark Mode Toggle */
+    .dark-mode-toggle {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+      z-index: 100;
+      border: none;
+      font-size: 1.5rem;
+      transition: var(--transition);
+    }
+    .dark-mode-toggle:hover {
+      transform: scale(1.1);
+    }
+    /* Person Card */
+    .person-card {
+      background: var(--white);
+      border-radius: 15px;
+      padding: 1.8rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-left: 5px solid var(--person);
+      transition: var(--transition);
+    }
+    .person-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+    .person-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .person-name {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--person);
+    }
+    .person-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+    .person-detail {
+      margin-bottom: 0.8rem;
+    }
+    .person-detail label {
+      font-weight: 500;
+      color: var(--gray);
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+    }
+    .person-detail span {
+      word-break: break-word;
+      font-weight: 500;
+    }
+    .person-actions {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+    .modal-content {
+      background-color: var(--white);
+      padding: 2.5rem;
+      border-radius: 15px;
+      width: 95%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      position: relative;
+      animation: modalAppear 0.4s ease-out;
+    }
+    @keyframes modalAppear {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.8rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .modal-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--gray);
+      transition: var(--transition);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    .close-modal:hover {
+      background-color: #f1f5f9;
+      color: var(--dark);
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e2e8f0;
+    }
+    /* Home Page Enhancements */
+    .hero {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(14, 165, 233, 0.05) 100%);
+      border-radius: 20px;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+      z-index: -1;
+    }
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .hero h2::after {
+      display: none;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--gray);
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    .feature-card {
+      background: var(--white);
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+      transition: var(--transition);
+    }
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+    }
+    .feature-card i {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+    .feature-card p {
+      color: var(--gray);
+      line-height: 1.6;
+    }
+    .cta-section {
+      text-align: center;
+      padding: 3rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 20px;
+      color: var(--white);
+      margin: 3rem 0;
+    }
+    .cta-section h2 {
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .cta-section h2::after {
+      background: var(--white);
+    }
+    .cta-section p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      opacity: 0.9;
+    }
+    .btn-light {
+      background: var(--white);
+      color: var(--primary);
+      font-weight: 600;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+    .btn-light:hover {
+      background: #f1f5f9;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-top: 2rem;
+      border-top: 1px solid #e2e8f0;
+    }
+    /* WhatsApp Button */
+    .whatsapp-btn {
+      position: fixed;
+      bottom: 100px;
+      right: 25px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #25D366;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4);
+      z-index: 99;
+      border: none;
+      font-size: 1.8rem;
+      transition: var(--transition);
+    }
+    .whatsapp-btn:hover {
+      transform: scale(1.1) rotate(10deg);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.5);
+    }
+    /* PDF Modal */
+    .pdf-modal .modal-content {
+      max-width: 500px;
+    }
+    .company-info {
+      background-color: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .company-info h4 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+    .company-info p {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .pdf-preview {
+      border: 1px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      margin: 1.5rem 0;
+      background-color: #f1f5f9;
+    }
+    .pdf-preview i {
+      font-size: 3rem;
+      color: #94a3b8;
+      margin-bottom: 1rem;
+    }
+    /* Person Transaction Modal */
+    .person-transaction-modal .modal-content {
+      max-width: 800px;
+    }
+    .transaction-form {
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.8rem;
+    }
+    .transaction-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+    .transaction-amount {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .amount-income {
+      color: var(--income);
+    }
+    .amount-expense {
+      color: var(--expense);
+    }
+    .transaction-date {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+    /* Contact Info */
+    .contact-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      color: var(--primary);
+      font-weight: 500;
+    }
+    .contact-info i {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo-container">
+    <span class="material-symbols-outlined logo">
+      calculate
+    </span>
+    <h1>NetMuhasebe</h1>
+  </div>
+  <div class="tagline">Kişisel Finans Yönetiminiz İçin En İyi Çözüm</div>
+</header>
+<!-- Toast Notification -->
+<div id="toast" class="toast">
+  <i class="fas fa-check-circle"></i>
+  <span id="toast-message">İşlem başarılı!</span>
+</div>
+<!-- Home Page -->
+<div class="container fade-in" id="homePage">
+  <div class="hero">
+    <h2>Finansal Sağlıklı Yaşamın Kapıları NetMuhasebe ile Açılıyor</h2>
+    <p>NetMuhasebe ile gelir-giderlerinizi kolayca takip edin, finansal hedeflerinize ulaşın ve daha bilinçli harcama alışkanlıkları kazanın. Kişisel muhasebenizi profesyonel bir şekilde yönetmenin en kolay yolu burada!</p>
+    <button class="btn btn-primary btn-lg" onclick="showLogin()">
+      <i class="fas fa-sign-in-alt"></i> Hemen Başlayın
+    </button>
+    <div class="contact-info">
+      <i class="fab fa-whatsapp"></i>
+      <span>Destek: 0505 431 50 02</span>
+    </div>
+  </div>
+  
+  <div class="features">
+    <div class="feature-card">
+      <i class="fas fa-wallet"></i>
+      <h3>Gelir-Gider Takibi</h3>
+      <p>Tüm gelir ve giderlerinizi tek bir yerden kolayca takip edin. Detaylı kategorilere göre harcamalarınızı analiz edin.</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-users"></i>
+      <h3>Kişiye Özel Borç/Alacak</h3>
+      <p>Arkadaşlarınızla veya ailenizle olan borç-alacak durumlarınızı kişi bazlı takip edin.</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-chart-line"></i>
+      <h3>Görsel Raporlar</h3>
+      <p>Finansal durumunuzu anlaşılır grafiklerle görün. Harcama alışkanlıklarınızı analiz edin.</p>
+    </div>
+  </div>
+  
+  <div class="cta-section">
+    <h2>Finansal Özgürlüğe Bugün Adım Atın</h2>
+    <p>NetMuhasebe ile finansal kontrolü elinize alın ve hedeflerinize ulaşın. Ücretsiz kaydolun ve deneyimleyin!</p>
+    <button class="btn btn-light" onclick="showRegister()">
+      <i class="fas fa-user-plus"></i> Ücretsiz Kayıt Ol
+    </button>
+  </div>
+  
+  <div class="center">
+    <p>Zaten bir hesabınız var mı? <button class="link-btn" onclick="showLogin()">Giriş Yap</button></p>
+  </div>
+</div>
+<!-- Auth Container -->
+<div class="container hidden fade-in" id="authContainer">
+  <h2 id="authTitle"><i class="fas fa-sign-in-alt"></i> Giriş Yap</h2>
+  <div class="form-group input-icon">
+    <i class="fas fa-envelope"></i>
+    <input type="email" id="email" class="form-control" placeholder="E-posta adresiniz" required />
+  </div>
+  <div class="form-group input-icon">
+    <i class="fas fa-lock"></i>
+    <input type="password" id="password" class="form-control" placeholder="Şifreniz" required />
+  </div>
+  <button class="btn btn-primary btn-block" onclick="authAction()" id="authButton">
+    <i class="fas fa-sign-in-alt"></i> Giriş Yap
+  </button>
+  <div class="center" style="margin-top: 1.5rem;">
+    <p id="toggleText">
+      Hesabınız yok mu? <button class="link-btn" onclick="toggleAuth()">Kayıt Ol</button>
+    </p>
+    <button class="link-btn" onclick="showHomePage()" style="margin-top: 1rem;">
+      <i class="fas fa-arrow-left"></i> Ana Sayfaya Dön
+    </button>
+  </div>
+</div>
+<!-- App Container -->
+<div class="container hidden fade-in" id="appContainer">
+  <div class="dashboard-header">
+    <div class="user-info">
+      <div class="user-avatar" id="userAvatar">U</div>
+      <div>
+        <div id="userMail">user@example.com</div>
+        <small id="currentDate"></small>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+    </button>
+  </div>
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('records')">
+      <i class="fas fa-receipt"></i> Kayıtlar
+    </div>
+    <div class="tab" onclick="switchTab('people')">
+      <i class="fas fa-users"></i> Kişiler
+    </div>
+    <div class="tab" onclick="switchTab('reports')">
+      <i class="fas fa-chart-bar"></i> Raporlar
+    </div>
+  </div>
+  <!-- Records Tab -->
+  <div class="tab-content active" id="recordsTab">
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+      <div class="summary-card balance">
+        <h3><i class="fas fa-wallet"></i> Bakiye</h3>
+        <div class="amount" id="balance">0.00 ₺</div>
+        <small>Toplam Net</small>
+      </div>
+      <div class="summary-card income">
+        <h3><i class="fas fa-arrow-down"></i> Gelir</h3>
+        <div class="amount" id="totalIncome">0.00 ₺</div>
+        <small>Toplam</small>
+      </div>
+      <div class="summary-card expense">
+        <h3><i class="fas fa-arrow-up"></i> Gider</h3>
+        <div class="amount" id="totalExpense">0.00 ₺</div>
+        <small>Toplam</small>
+      </div>
+      <div class="summary-card people">
+        <h3><i class="fas fa-users"></i> Kişiler</h3>
+        <div class="amount" id="totalPeople">0</div>
+        <small>Kayıtlı</small>
+      </div>
+    </div>
+    <!-- Add Record Form -->
+    <h3><i class="fas fa-plus-circle"></i> Yeni Kayıt Ekle</h3>
+    <div class="form-group">
+      <label for="desc">Açıklama</label>
+      <input type="text" id="desc" class="form-control" placeholder="Örneğin: Market alışverişi" />
+    </div>
+    <div class="form-group">
+      <label for="amount">Tutar (₺)</label>
+      <input type="number" id="amount" class="form-control" placeholder="0.00" step="0.01" min="0" />
+    </div>
+    <div class="form-group">
+      <label for="type">İşlem Türü</label>
+      <select id="type" class="form-control">
+        <option value="income">Gelir</option>
+        <option value="expense">Gider</option>
+        <option value="person">Kişi (Borç/Alacak)</option>
+      </select>
+    </div>
+    <div class="form-group" id="categoryGroup">
+      <label for="category">Kategori</label>
+      <select id="category" class="form-control">
+        <option value="other">Diğer</option>
+        <option value="salary">Maaş</option>
+        <option value="food">Yemek</option>
+        <option value="transport">Ulaşım</option>
+        <option value="shopping">Alışveriş</option>
+        <option value="entertainment">Eğlence</option>
+        <option value="bill">Fatura</option>
+        <option value="health">Sağlık</option>
+        <option value="education">Eğitim</option>
+      </select>
+    </div>
+    <div class="form-group hidden" id="personGroup">
+      <label for="person">Kişi Seçin</label>
+      <select id="person" class="form-control">
+        <option value="">Kişi seçin...</option>
+      </select>
+      <small class="link-btn" onclick="showAddPersonModal()" style="display: block; margin-top: 0.5rem;">
+        <i class="fas fa-plus"></i> Yeni kişi ekle
+      </small>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="addRecord()">
+      <i class="fas fa-save"></i> Kaydet
+    </button>
+    <!-- Filter Controls -->
+    <div class="filter-controls">
+      <div class="filter-group">
+        <label for="filterType">Tür:</label>
+        <select id="filterType" class="form-control" onchange="filterRecords()">
+          <option value="all">Tümü</option>
+          <option value="income">Gelir</option>
+          <option value="expense">Gider</option>
+          <option value="person">Kişiler</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filterMonth">Ay:</label>
+        <select id="filterMonth" class="form-control" onchange="filterRecords()">
+          <option value="all">Tümü</option>
+          <option value="0">Ocak</option>
+          <option value="1">Şubat</option>
+          <option value="2">Mart</option>
+          <option value="3">Nisan</option>
+          <option value="4">Mayıs</option>
+          <option value="5">Haziran</option>
+          <option value="6">Temmuz</option>
+          <option value="7">Ağustos</option>
+          <option value="8">Eylül</option>
+          <option value="9">Ekim</option>
+          <option value="10">Kasım</option>
+          <option value="11">Aralık</option>
+        </select>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="resetFilters()">
+        <i class="fas fa-sync-alt"></i> Sıfırla
+      </button>
+    </div>
+    <!-- Records Table -->
+    <table class="records-table">
+      <thead>
+        <tr>
+          <th>Açıklama</th>
+          <th>Tutar</th>
+          <th>Kategori</th>
+          <th>Tür</th>
+          <th>Tarih</th>
+          <th>İşlem</th>
+        </tr>
+      </thead>
+      <tbody id="recordList">
+        <!-- Records will be inserted here -->
+      </tbody>
+    </table>
+    <!-- Empty State -->
+    <div id="emptyState" class="empty-state hidden">
+      <i class="fas fa-clipboard-list"></i>
+      <h3>Kayıt Bulunamadı</h3>
+      <p>Henüz bir kayıt eklemediniz. Yukarıdaki formu kullanarak ilk kaydınızı ekleyin.</p>
+    </div>
+  </div>
+  <!-- People Tab -->
+  <div class="tab-content" id="peopleTab">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.8rem;">
+      <h3><i class="fas fa-users"></i> Kişiler</h3>
+      <button class="btn btn-person" onclick="showAddPersonModal()">
+        <i class="fas fa-plus"></i> Yeni Kişi Ekle
+      </button>
+    </div>
+    <div id="peopleList">
+      <!-- People cards will be inserted here -->
+    </div>
+    <div id="emptyPeopleState" class="empty-state">
+      <i class="fas fa-user-friends"></i>
+      <h3>Kişi Bulunamadı</h3>
+      <p>Henüz bir kişi eklemediniz. Yeni kişi eklemek için butona tıklayın.</p>
+    </div>
+  </div>
+  <!-- Reports Tab -->
+  <div class="tab-content" id="reportsTab">
+    <h3><i class="fas fa-chart-bar"></i> Finansal Raporlar</h3>
+    <div class="chart-container">
+      <h3><i class="fas fa-chart-pie"></i> Harcama Dağılımı</h3>
+      <canvas id="expenseChart"></canvas>
+    </div>
+    <div class="chart-container" style="margin-top: 2.5rem;">
+      <h3><i class="fas fa-chart-line"></i> Aylık Özet</h3>
+      <canvas id="monthlyChart"></canvas>
+    </div>
+    <div class="center" style="margin-top: 2rem;">
+      <button class="btn btn-success" onclick="showPdfModal()">
+        <i class="fas fa-file-pdf"></i> PDF Rapor Oluştur
+      </button>
+    </div>
+  </div>
+</div>
+<!-- Add Person Modal -->
+<div class="modal" id="addPersonModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title"><i class="fas fa-user-plus"></i> Yeni Kişi Ekle</h3>
+      <button class="close-modal" onclick="closeModal('addPersonModal')">&times;</button>
+    </div>
+    <div class="form-group">
+      <label for="personName">Tam Adı</label>
+      <input type="text" id="personName" class="form-control" placeholder="Örneğin: Ahmet Yılmaz" />
+    </div>
+    <div class="form-group">
+      <label for="personPhone">Telefon</label>
+      <input type="tel" id="personPhone" class="form-control" placeholder="Örneğin: 5551234567" />
+    </div>
+    <div class="form-group">
+      <label for="personEmail">E-posta</label>
+      <input type="email" id="personEmail" class="form-control" placeholder="Örneğin: ahmet@example.com" />
+    </div>
+    <div class="form-group">
+      <label for="personRelation">İlişki</label>
+      <select id="personRelation" class="form-control">
+        <option value="friend">Arkadaş</option>
+        <option value="family">Aile</option>
+        <option value="business">İş</option>
+        <option value="other">Diğer</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="personNotes">Notlar</label>
+      <textarea id="personNotes" class="form-control" rows="3" placeholder="Ek bilgiler..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addPersonModal')">İptal</button>
+      <button class="btn btn-person" onclick="savePerson()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- Person Transactions Modal -->
+<div class="modal person-transaction-modal" id="personTransactionModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title"><i class="fas fa-user"></i> <span id="modalPersonName">Kişi Adı</span> İşlemleri</h3>
+      <button class="close-modal" onclick="closeModal('personTransactionModal')">&times;</button>
+    </div>
+    <div class="transaction-form">
+      <h4><i class="fas fa-plus-circle"></i> Yeni İşlem Ekle</h4>
+      <div class="form-group">
+        <label for="personTransactionDesc">Açıklama</label>
+        <input type="text" id="personTransactionDesc" class="form-control" placeholder="Örneğin: Yemek parası" />
+      </div>
+      <div class="form-group">
+        <label for="personTransactionAmount">Tutar (₺)</label>
+        <input type="number" id="personTransactionAmount" class="form-control" placeholder="0.00" step="0.01" min="0" />
+      </div>
+      <div class="form-group">
+        <label for="personTransactionType">İşlem Türü</label>
+        <select id="personTransactionType" class="form-control">
+          <option value="give">Kişiye Verdim</option>
+          <option value="take">Kişiden Aldım</option>
+        </select>
+      </div>
+      <button class="btn btn-person" onclick="addPersonTransaction()">İşlem Ekle</button>
+    </div>
+    <h4><i class="fas fa-list"></i> İşlem Geçmişi</h4>
+    <div class="transaction-list" id="personTransactionList">
+      <!-- Transactions will be listed here -->
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('personTransactionModal')">Kapat</button>
+    </div>
+  </div>
+</div>
+
+<!-- PDF Modal -->
+<div class="modal pdf-modal" id="pdfModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title"><i class="fas fa-file-pdf"></i> PDF Rapor Oluştur</h3>
+      <button class="close-modal" onclick="closeModal('pdfModal')">&times;</button>
+    </div>
+    <div class="company-info">
+      <h4>Şirket Bilgileri</h4>
+      <div class="form-group">
+        <label for="companyName">Şirket Adı</label>
+        <input type="text" id="companyName" class="form-control" placeholder="Şirket adınızı girin" />
+      </div>
+      <div class="form-group">
+        <label for="companyAddress">Adres</label>
+        <input type="text" id="companyAddress" class="form-control" placeholder="Şirket adresinizi girin" />
+      </div>
+      <div class="form-group">
+        <label for="companyPhone">Telefon</label>
+        <input type="text" id="companyPhone" class="form-control" placeholder="Şirket telefon numaranızı girin" />
+      </div>
+    </div>
+    <div class="pdf-preview">
+      <i class="fas fa-file-pdf"></i>
+      <h4>PDF Önizleme</h4>
+      <p>Raporunuz oluşturulacak ve WhatsApp üzerinden gönderilecektir.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('pdfModal')">İptal</button>
+      <button class="btn btn-success" onclick="generatePdf()">
+        <i class="fab fa-whatsapp"></i> WhatsApp ile Gönder
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Dark Mode Toggle -->
+<button class="dark-mode-toggle" onclick="toggleDarkMode()">
+  <i class="fas fa-moon"></i>
+</button>
+
+<!-- WhatsApp Button -->
+<button class="whatsapp-btn" onclick="openWhatsApp()">
+  <i class="fab fa-whatsapp"></i>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Global Variables
+let isLogin = true;
+let currentUser = null;
+let expenseChart = null;
+let monthlyChart = null;
+let darkMode = false;
+let currentEditingPersonId = null;
+let currentPersonForTransactions = null;
+
+// DOM Elements
+const homePage = document.getElementById('homePage');
+const authContainer = document.getElementById('authContainer');
+const appContainer = document.getElementById('appContainer');
+const authTitle = document.getElementById('authTitle');
+const authButton = document.getElementById('authButton');
+const toggleText = document.getElementById('toggleText');
+const userMail = document.getElementById('userMail');
+const userAvatar = document.getElementById('userAvatar');
+const currentDateEl = document.getElementById('currentDate');
+const toast = document.getElementById('toast');
+const emptyState = document.getElementById('emptyState');
+const emptyPeopleState = document.getElementById('emptyPeopleState');
+const chartContainer = document.getElementById('chartContainer');
+const typeSelect = document.getElementById('type');
+const categoryGroup = document.getElementById('categoryGroup');
+const personGroup = document.getElementById('personGroup');
+const personSelect = document.getElementById('person');
+
+// Initialize the app
+document.addEventListener('DOMContentLoaded', () => {
+  // Check for saved dark mode preference
+  if (localStorage.getItem('darkMode') === 'true') {
+    toggleDarkMode();
+  }
+  // Set current date
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  currentDateEl.textContent = new Date().toLocaleDateString('tr-TR', options);
+  // Add event listener for type select change
+  typeSelect.addEventListener('change', function() {
+    if (this.value === 'person') {
+      categoryGroup.classList.add('hidden');
+      personGroup.classList.remove('hidden');
+      loadPeopleSelect();
+    } else {
+      categoryGroup.classList.remove('hidden');
+      personGroup.classList.add('hidden');
+    }
+  });
+});
+
+// Toggle between login and register
+function toggleAuth() {
+  isLogin = !isLogin;
+  authTitle.innerHTML = isLogin ? '<i class="fas fa-sign-in-alt"></i> Giriş Yap' : '<i class="fas fa-user-plus"></i> Kayıt Ol';
+  authButton.innerHTML = isLogin ? '<i class="fas fa-sign-in-alt"></i> Giriş Yap' : '<i class="fas fa-user-plus"></i> Kayıt Ol';
+  toggleText.innerHTML = isLogin ? 
+    'Hesabınız yok mu? <button class="link-btn" onclick="toggleAuth()">Kayıt Ol</button>' : 
+    'Zaten hesabınız var mı? <button class="link-btn" onclick="toggleAuth()">Giriş Yap</button>';
+}
+
+// Show login page
+function showLogin() {
+  isLogin = true;
+  toggleAuth(); // Reset to login view
+  homePage.classList.add('hidden');
+  authContainer.classList.remove('hidden');
+  authContainer.classList.add('fade-in');
+}
+
+// Show register page directly
+function showRegister() {
+  isLogin = false;
+  toggleAuth(); // Set to register view
+  homePage.classList.add('hidden');
+  authContainer.classList.remove('hidden');
+  authContainer.classList.add('fade-in');
+}
+
+// Show home page
+function showHomePage() {
+  authContainer.classList.add('hidden');
+  homePage.classList.remove('hidden');
+  homePage.classList.add('fade-in');
+}
+
+// Authentication action (login/register)
+function authAction() {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+  // Validation
+  if (!validateEmail(email)) {
+    showToast('Geçerli bir e-posta adresi girin.', 'error');
+    return;
+  }
+  if (password.length < 6) {
+    showToast('Şifre en az 6 karakter olmalıdır.', 'error');
+    return;
+  }
+  let users = JSON.parse(localStorage.getItem('users') || '{}');
+  if (isLogin) {
+    // Login logic
+    if (!users[email] || users[email].password !== password) {
+      showToast('Hatalı e-posta veya şifre.', 'error');
+      return;
+    }
+    showToast('Başarıyla giriş yapıldı!', 'success');
+  } else {
+    // Register logic
+    if (users[email]) {
+      showToast('Bu e-posta zaten kayıtlı.', 'error');
+      return;
+    }
+    // Create new user with additional fields
+    users[email] = { 
+      password, 
+      data: [],
+      people: [],
+      settings: { currency: '₺', darkMode: false },
+      profile: { name: email.split('@')[0] }
+    };
+    showToast('Hesabınız başarıyla oluşturuldu!', 'success');
+  }
+  // Save users and set current user
+  localStorage.setItem('users', JSON.stringify(users));
+  currentUser = email;
+  // Update UI
+  userMail.textContent = currentUser;
+  userAvatar.textContent = currentUser.charAt(0).toUpperCase();
+  // Switch to app view
+  authContainer.classList.add('hidden');
+  appContainer.classList.remove('hidden');
+  appContainer.classList.add('fade-in');
+  // Load user data
+  loadRecords();
+  loadPeople();
+}
+
+// Validate email
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+}
+
+// Add new record
+function addRecord() {
+  const desc = document.getElementById('desc').value.trim();
+  const amount = parseFloat(document.getElementById('amount').value);
+  const type = document.getElementById('type').value;
+  const category = document.getElementById('category').value;
+  const personId = type === 'person' ? document.getElementById('person').value : null;
+  // Validation
+  if (!desc || desc.length < 3) {
+    showToast('Açıklama en az 3 karakter olmalıdır.', 'error');
+    return;
+  }
+  if (!amount || amount <= 0) {
+    showToast('Geçerli bir tutar girin.', 'error');
+    return;
+  }
+  if (type === 'person' && !personId) {
+    showToast('Lütfen bir kişi seçin.', 'error');
+    return;
+  }
+  // Create record object
+  const record = {
+    id: Date.now().toString(),
+    desc,
+    amount,
+    type,
+    category,
+    personId,
+    date: new Date().toISOString()
+  };
+  // Save to localStorage
+  let users = JSON.parse(localStorage.getItem('users'));
+  users[currentUser].data.push(record);
+  localStorage.setItem('users', JSON.stringify(users));
+  // Reset form
+  document.getElementById('desc').value = '';
+  document.getElementById('amount').value = '';
+  // Reload records and show success
+  loadRecords();
+  showToast('Kayıt başarıyla eklendi!', 'success');
+}
+
+// Load records from localStorage
+function loadRecords() {
+  let users = JSON.parse(localStorage.getItem('users'));
+  let records = users[currentUser].data || [];
+  // Filter records if needed
+  records = filterRecords(records);
+  // Sort by date (newest first)
+  records.sort((a, b) => new Date(b.date) - new Date(a.date));
+  // Update UI
+  updateRecordsTable(records);
+  updateSummaryCards(records);
+  updateChart(records);
+}
+
+// Load people for select dropdown
+function loadPeopleSelect() {
+  let users = JSON.parse(localStorage.getItem('users'));
+  let people = users[currentUser].people || [];
+  personSelect.innerHTML = '<option value="">Kişi seçin...</option>';
+  people.forEach(person => {
+    const option = document.createElement('option');
+    option.value = person.id;
+    option.textContent = person.name;
+    personSelect.appendChild(option);
+  });
+}
+
+// Load people for people tab
+function loadPeople() {
+  let users = JSON.parse(localStorage.getItem('users'));
+  let people = users[currentUser].people || [];
+  const peopleList = document.getElementById('peopleList');
+  peopleList.innerHTML = '';
+  if (people.length === 0) {
+    emptyPeopleState.classList.remove('hidden');
+    return;
+  }
+  emptyPeopleState.classList.add('hidden');
+  // Calculate total people count
+  document.getElementById('totalPeople').textContent = people.length;
+  // Calculate balances for each person
+  const records = users[currentUser].data || [];
+  const personBalances = {};
+  records.forEach(record => {
+    if (record.type === 'person' && record.personId) {
+      if (!personBalances[record.personId]) {
+        personBalances[record.personId] = 0;
+      }
+      // For person records, amount represents money given to person (positive is debt, negative is credit)
+      personBalances[record.personId] += record.amount;
+    }
+  });
+  // Display people
+  people.forEach(person => {
+    const balance = personBalances[person.id] || 0;
+    const personCard = document.createElement('div');
+    personCard.className = 'person-card';
+    personCard.innerHTML = `
+      <div class="person-header">
+        <div class="person-name">${person.name}</div>
+        <div style="font-weight: 600; color: ${balance > 0 ? 'var(--expense)' : balance < 0 ? 'var(--income)' : 'var(--gray)'}">
+          ${balance > 0 ? `${balance.toFixed(2)} ₺ BORÇ` : balance < 0 ? `${Math.abs(balance).toFixed(2)} ₺ ALACAK` : 'HESAP KAPALI'}
+        </div>
+      </div>
+      <div class="person-details">
+        <div class="person-detail">
+          <label><i class="fas fa-phone"></i> Telefon</label>
+          <span>${person.phone || 'Belirtilmemiş'}</span>
+        </div>
+        <div class="person-detail">
+          <label><i class="fas fa-envelope"></i> E-posta</label>
+          <span>${person.email || 'Belirtilmemiş'}</span>
+        </div>
+        <div class="person-detail">
+          <label><i class="fas fa-user-friends"></i> İlişki</label>
+          <span>${getRelationName(person.relation)}</span>
+        </div>
+        <div class="person-detail">
+          <label><i class="fas fa-sticky-note"></i> Notlar</label>
+          <span>${person.notes || 'Not yok'}</span>
+        </div>
+      </div>
+      <div class="person-actions">
+        <button class="btn btn-outline btn-sm" onclick="editPerson('${person.id}')">
+          <i class="fas fa-edit"></i> Düzenle
+        </button>
+        <button class="btn btn-outline btn-sm" onclick="showPersonTransactionsModal('${person.id}', '${person.name}')">
+          <i class="fas fa-list"></i> İşlemler
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="deletePerson('${person.id}')">
+          <i class="fas fa-trash-alt"></i> Sil
+        </button>
+      </div>
+    `;
+    peopleList.appendChild(personCard);
+  });
+}
+
+// Get relation name for display
+function getRelationName(relation) {
+  const relations = {
+    'friend': 'Arkadaş',
+    'family': 'Aile',
+    'business': 'İş',
+    'other': 'Diğer'
+  };
+  return relations[relation] || relation;
+}
+
+// Filter records based on selected filters
+function filterRecords(records) {
+  const typeFilter = document.getElementById('filterType').value;
+  const monthFilter = document.getElementById('filterMonth').value;
+  let users = JSON.parse(localStorage.getItem('users'));
+  let allRecords = users[currentUser].data || [];
+  if (typeof records === 'undefined') {
+    records = allRecords;
+  }
+  // Apply type filter
+  if (typeFilter !== 'all') {
+    records = records.filter(record => record.type === typeFilter);
+  }
+  // Apply month filter
+  if (monthFilter !== 'all') {
+    const month = parseInt(monthFilter);
+    records = records.filter(record => {
+      const recordDate = new Date(record.date);
+      return recordDate.getMonth() === month;
+    });
+  }
+  // Update table with filtered records
+  updateRecordsTable(records);
+  return records;
+}
+
+// Reset all filters
+function resetFilters() {
+  document.getElementById('filterType').value = 'all';
+  document.getElementById('filterMonth').value = 'all';
+  loadRecords();
+}
+
+// Update records table in UI
+function updateRecordsTable(records) {
+  const recordList = document.getElementById('recordList');
+  recordList.innerHTML = '';
+  if (records.length === 0) {
+    emptyState.classList.remove('hidden');
+    return;
+  }
+  emptyState.classList.add('hidden');
+  // Format options for date
+  const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+  // Get people for person records
+  let users = JSON.parse(localStorage.getItem('users'));
+  let people = users[currentUser].people || [];
+  records.forEach(record => {
+    const row = document.createElement('tr');
+    // Format date
+    const recordDate = new Date(record.date);
+    const formattedDate = recordDate.toLocaleDateString('tr-TR', dateOptions);
+    // Determine type badge
+    let typeBadge = '';
+    if (record.type === 'income') {
+      typeBadge = '<span class="type-badge type-income"><i class="fas fa-arrow-down"></i> Gelir</span>';
+    } else if (record.type === 'expense') {
+      typeBadge = '<span class="type-badge type-expense"><i class="fas fa-arrow-up"></i> Gider</span>';
+    } else if (record.type === 'person') {
+      const person = people.find(p => p.id === record.personId);
+      const personName = person ? person.name : 'Bilinmiyor';
+      typeBadge = `<span class="type-badge type-person"><i class="fas fa-user"></i> ${personName}</span>`;
+    }
+    // Get category name
+    const categoryNames = {
+      'salary': 'Maaş',
+      'food': 'Yemek',
+      'transport': 'Ulaşım',
+      'shopping': 'Alışveriş',
+      'entertainment': 'Eğlence',
+      'bill': 'Fatura',
+      'health': 'Sağlık',
+      'education': 'Eğitim',
+      'other': 'Diğer'
+    };
+    row.innerHTML = `
+      <td>${record.desc}</td>
+      <td style="font-weight: 500; color: ${record.type === 'income' ? 'var(--income)' : record.type === 'expense' ? 'var(--expense)' : 'var(--person)'}">
+        ${record.type === 'income' ? '+' : record.type === 'expense' ? '-' : record.amount > 0 ? '+' : '-'}${Math.abs(record.amount).toFixed(2)} ₺
+      </td>
+      <td>${categoryNames[record.category] || record.category}</td>
+      <td>${typeBadge}</td>
+      <td>${formattedDate}</td>
+      <td>
+        <button class="action-btn" onclick="deleteRecord('${record.id}')" title="Sil">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </td>
+    `;
+    recordList.appendChild(row);
+  });
+}
+
+// Update summary cards
+function updateSummaryCards(records) {
+  let income = 0;
+  let expense = 0;
+  records.forEach(record => {
+    if (record.type === 'income') {
+      income += record.amount;
+    } else if (record.type === 'expense') {
+      expense += record.amount;
+    }
+    // Person records don't affect income/expense totals
+  });
+  const balance = income - expense;
+  document.getElementById('balance').textContent = balance.toFixed(2) + ' ₺';
+  document.getElementById('totalIncome').textContent = income.toFixed(2) + ' ₺';
+  document.getElementById('totalExpense').textContent = expense.toFixed(2) + ' ₺';
+  // Update balance color based on value
+  const balanceEl = document.querySelector('.summary-card.balance .amount');
+  if (balance > 0) {
+    balanceEl.style.color = 'var(--income)';
+  } else if (balance < 0) {
+    balanceEl.style.color = 'var(--expense)';
+  } else {
+    balanceEl.style.color = 'var(--primary)';
+  }
+  // Update people count
+  let users = JSON.parse(localStorage.getItem('users'));
+  document.getElementById('totalPeople').textContent = users[currentUser].people?.length || 0;
+}
+
+// Update chart with expense data
+function updateChart(records) {
+  // Only show chart if there are records
+  if (records.length === 0) {
+    chartContainer.classList.add('hidden');
+    if (expenseChart) {
+      expenseChart.destroy();
+    }
+    if (monthlyChart) {
+      monthlyChart.destroy();
+    }
+    return;
+  }
+  // Prepare data for expense chart
+  const expensesByCategory = {};
+  const incomesByCategory = {};
+  records.forEach(record => {
+    if (record.type === 'expense') {
+      expensesByCategory[record.category] = (expensesByCategory[record.category] || 0) + record.amount;
+    } else if (record.type === 'income') {
+      incomesByCategory[record.category] = (incomesByCategory[record.category] || 0) + record.amount;
+    }
+  });
+  // Category names for display
+  const categoryNames = {
+    'salary': 'Maaş',
+    'food': 'Yemek',
+    'transport': 'Ulaşım',
+    'shopping': 'Alışveriş',
+    'entertainment': 'Eğlence',
+    'bill': 'Fatura',
+    'health': 'Sağlık',
+    'education': 'Eğitim',
+    'other': 'Diğer'
+  };
+  // Prepare expense chart data
+  const expenseCategories = Object.keys(expensesByCategory);
+  const expenseData = expenseCategories.map(cat => expensesByCategory[cat]);
+  const expenseLabels = expenseCategories.map(cat => categoryNames[cat] || cat);
+  // Get canvas element
+  const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+  // Destroy previous chart if exists
+  if (expenseChart) {
+    expenseChart.destroy();
+  }
+  // Create new expense chart
+  if (expenseCategories.length > 0) {
+    expenseChart = new Chart(expenseCtx, {
+      type: 'pie',
+      data: {
+        labels: expenseLabels,
+        datasets: [{
+          data: expenseData,
+          backgroundColor: [
+            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+            '#9966FF', '#FF9F40', '#8AC24A', '#607D8B', 
+            '#E91E63'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+          title: {
+            display: true,
+            text: 'Harcama Kategorileri',
+            font: {
+              size: 16
+            }
+          }
+        }
+      }
+    });
+  }
+  // Prepare data for monthly chart
+  const monthlyData = {};
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  records.forEach(record => {
+    if (record.type !== 'person') { // Exclude person records from this chart
+      const recordDate = new Date(record.date);
+      const month = recordDate.getMonth();
+      const year = recordDate.getFullYear();
+      if (year === currentYear) {
+        if (!monthlyData[month]) {
+          monthlyData[month] = { income: 0, expense: 0 };
+        }
+        if (record.type === 'income') {
+          monthlyData[month].income += record.amount;
+        } else if (record.type === 'expense') {
+          monthlyData[month].expense += record.amount;
+        }
+      }
+    }
+  });
+  // Prepare monthly chart data
+  const monthNames = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 
+                     'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+  const monthlyLabels = [];
+  const monthlyIncomeData = [];
+  const monthlyExpenseData = [];
+  for (let i = 0; i < 12; i++) {
+    monthlyLabels.push(monthNames[i]);
+    monthlyIncomeData.push(monthlyData[i]?.income || 0);
+    monthlyExpenseData.push(monthlyData[i]?.expense || 0);
+  }
+  // Get monthly chart canvas
+  const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+  // Destroy previous chart if exists
+  if (monthlyChart) {
+    monthlyChart.destroy();
+  }
+  // Create new monthly chart
+  monthlyChart = new Chart(monthlyCtx, {
+    type: 'bar',
+    data: {
+      labels: monthlyLabels,
+      datasets: [
+        {
+          label: 'Gelir',
+          data: monthlyIncomeData,
+          backgroundColor: 'rgba(16, 185, 129, 0.7)',
+          borderColor: 'rgba(16, 185, 129, 1)',
+          borderWidth: 1
+        },
+        {
+          label: 'Gider',
+          data: monthlyExpenseData,
+          backgroundColor: 'rgba(239, 68, 68, 0.7)',
+          borderColor: 'rgba(239, 68, 68, 1)',
+          borderWidth: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      },
+      plugins: {
+        legend: {
+          position: 'bottom',
+        },
+        title: {
+          display: true,
+          text: 'Aylık Gelir ve Giderler',
+          font: {
+            size: 16
+          }
+        }
+      }
+    }
+  });
+}
+
+// Delete a record
+function deleteRecord(id) {
+  if (!confirm('Bu kaydı silmek istediğinize emin misiniz?')) {
+    return;
+  }
+  let users = JSON.parse(localStorage.getItem('users'));
+  users[currentUser].data = users[currentUser].data.filter(record => record.id !== id);
+  localStorage.setItem('users', JSON.stringify(users));
+  loadRecords();
+  showToast('Kayıt başarıyla silindi!', 'success');
+}
+
+// Logout user
+function logout() {
+  currentUser = null;
+  appContainer.classList.add('hidden');
+  homePage.classList.remove('hidden');
+  homePage.classList.add('fade-in');
+  // Reset form fields
+  document.getElementById('email').value = '';
+  document.getElementById('password').value = '';
+}
+
+// Show toast notification
+function showToast(message, type = 'success') {
+  const toastMessage = document.getElementById('toast-message');
+  toastMessage.textContent = message;
+  // Set icon based on type
+  const icon = toast.querySelector('i');
+  if (type === 'success') {
+    icon.className = 'fas fa-check-circle';
+  } else if (type === 'error') {
+    icon.className = 'fas fa-exclamation-circle';
+  } else if (type === 'warning') {
+    icon.className = 'fas fa-exclamation-triangle';
+  }
+  // Set toast class
+  toast.className = 'toast';
+  toast.classList.add(type);
+  // Show toast
+  toast.classList.add('show');
+  // Hide after 3 seconds
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+}
+
+// Toggle dark mode
+function toggleDarkMode() {
+  darkMode = !darkMode;
+  document.body.classList.toggle('dark-mode');
+  // Save preference
+  localStorage.setItem('darkMode', darkMode);
+  // Update button icon
+  const darkModeBtn = document.querySelector('.dark-mode-toggle i');
+  darkModeBtn.className = darkMode ? 'fas fa-sun' : 'fas fa-moon';
+  // Show notification
+  showToast(`Koyu tema ${darkMode ? 'açıldı' : 'kapatıldı'}`, 'success');
+}
+
+// Switch between tabs
+function switchTab(tabName) {
+  // Update active tab
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.classList.remove('active');
+  });
+  if (tabName === 'records') {
+    document.querySelector('.tab:nth-child(1)').classList.add('active');
+    document.getElementById('recordsTab').classList.add('active');
+    loadRecords();
+  } else if (tabName === 'people') {
+    document.querySelector('.tab:nth-child(2)').classList.add('active');
+    document.getElementById('peopleTab').classList.add('active');
+    loadPeople();
+  } else if (tabName === 'reports') {
+    document.querySelector('.tab:nth-child(3)').classList.add('active');
+    document.getElementById('reportsTab').classList.add('active');
+    loadRecords(); // To refresh charts
+  }
+}
+
+// Show add person modal
+function showAddPersonModal() {
+  currentEditingPersonId = null;
+  document.getElementById('personName').value = '';
+  document.getElementById('personPhone').value = '';
+  document.getElementById('personEmail').value = '';
+  document.getElementById('personRelation').value = 'friend';
+  document.getElementById('personNotes').value = '';
+  document.getElementById('addPersonModal').style.display = 'flex';
+}
+
+// Close modal
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = 'none';
+}
+
+// Save person
+function savePerson() {
+  const name = document.getElementById('personName').value.trim();
+  const phone = document.getElementById('personPhone').value.trim();
+  const email = document.getElementById('personEmail').value.trim();
+  const relation = document.getElementById('personRelation').value;
+  const notes = document.getElementById('personNotes').value.trim();
+  if (!name) {
+    showToast('Lütfen bir isim girin.', 'error');
+    return;
+  }
+  let users = JSON.parse(localStorage.getItem('users'));
+  if (currentEditingPersonId) {
+    // Update existing person
+    const personIndex = users[currentUser].people.findIndex(p => p.id === currentEditingPersonId);
+    if (personIndex !== -1) {
+      users[currentUser].people[personIndex] = {
+        id: currentEditingPersonId,
+        name,
+        phone,
+        email,
+        relation,
+        notes
+      };
+    }
+  } else {
+    // Add new person
+    const newPerson = {
+      id: Date.now().toString(),
+      name,
+      phone,
+      email,
+      relation,
+      notes
+    };
+    if (!users[currentUser].people) {
+      users[currentUser].people = [];
+    }
+    users[currentUser].people.push(newPerson);
+  }
+  localStorage.setItem('users', JSON.stringify(users));
+  closeModal('addPersonModal');
+  loadPeople();
+  loadPeopleSelect();
+  showToast(`Kişi ${currentEditingPersonId ? 'güncellendi' : 'eklendi'}!`, 'success');
+}
+
+// Edit person
+function editPerson(personId) {
+  let users = JSON.parse(localStorage.getItem('users'));
+  const person = users[currentUser].people.find(p => p.id === personId);
+  if (!person) {
+    showToast('Kişi bulunamadı.', 'error');
+    return;
+  }
+  currentEditingPersonId = personId;
+  document.getElementById('personName').value = person.name;
+  document.getElementById('personPhone').value = person.phone || '';
+  document.getElementById('personEmail').value = person.email || '';
+  document.getElementById('personRelation').value = person.relation || 'friend';
+  document.getElementById('personNotes').value = person.notes || '';
+  document.getElementById('addPersonModal').style.display = 'flex';
+}
+
+// Delete person
+function deletePerson(personId) {
+  if (!confirm('Bu kişiyi ve bu kişiye ait tüm işlemleri silmek istediğinize emin misiniz?')) {
+    return;
+  }
+  let users = JSON.parse(localStorage.getItem('users'));
+  // Delete person
+  users[currentUser].people = users[currentUser].people.filter(p => p.id !== personId);
+  // Delete related records
+  users[currentUser].data = users[currentUser].data.filter(record => record.personId !== personId);
+  localStorage.setItem('users', JSON.stringify(users));
+  loadPeople();
+  loadRecords();
+  showToast('Kişi ve ilişkili işlemler silindi!', 'success');
+}
+
+// Show person transactions modal
+function showPersonTransactionsModal(personId, personName) {
+  currentPersonForTransactions = personId;
+  document.getElementById('modalPersonName').textContent = personName;
+  document.getElementById('personTransactionDesc').value = '';
+  document.getElementById('personTransactionAmount').value = '';
+  document.getElementById('personTransactionType').value = 'give';
+  
+  loadPersonTransactions(personId);
+  document.getElementById('personTransactionModal').style.display = 'flex';
+}
+
+// Load person transactions
+function loadPersonTransactions(personId) {
+  let users = JSON.parse(localStorage.getItem('users'));
+  let records = users[currentUser].data || [];
+  
+  // Filter records for this person
+  const personRecords = records.filter(record => 
+    record.type === 'person' && record.personId === personId
+  );
+  
+  // Sort by date (newest first)
+  personRecords.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  const transactionList = document.getElementById('personTransactionList');
+  transactionList.innerHTML = '';
+  
+  if (personRecords.length === 0) {
+    transactionList.innerHTML = '<p class="center">Bu kişi için işlem bulunamadı.</p>';
+    return;
+  }
+  
+  personRecords.forEach(record => {
+    const transactionItem = document.createElement('div');
+    transactionItem.className = 'transaction-item';
+    
+    const recordDate = new Date(record.date);
+    const formattedDate = recordDate.toLocaleDateString('tr-TR');
+    
+    // Determine if it's income or expense for this person
+    const isIncomeForPerson = record.amount < 0; // Negative means person gave us money
+    const amountClass = isIncomeForPerson ? 'amount-income' : 'amount-expense';
+    const amountText = `${isIncomeForPerson ? '+' : '-'}${Math.abs(record.amount).toFixed(2)} ₺`;
+    const typeText = isIncomeForPerson ? 'Kişiden Aldım' : 'Kişiye Verdim';
+    
+    transactionItem.innerHTML = `
+      <div>
+        <div>${record.desc}</div>
+        <div class="transaction-date">${formattedDate} - ${typeText}</div>
+      </div>
+      <div class="transaction-amount ${amountClass}">${amountText}</div>
+    `;
+    
+    transactionList.appendChild(transactionItem);
+  });
+}
+
+// Add person transaction
+function addPersonTransaction() {
+  const desc = document.getElementById('personTransactionDesc').value.trim();
+  const amount = parseFloat(document.getElementById('personTransactionAmount').value);
+  const type = document.getElementById('personTransactionType').value;
+  
+  // Validation
+  if (!desc || desc.length < 3) {
+    showToast('Açıklama en az 3 karakter olmalıdır.', 'error');
+    return;
+  }
+  if (!amount || amount <= 0) {
+    showToast('Geçerli bir tutar girin.', 'error');
+    return;
+  }
+  
+  // Adjust amount based on transaction type
+  // 'give' means we gave money to person (positive amount)
+  // 'take' means we took money from person (negative amount)
+  const adjustedAmount = type === 'give' ? amount : -amount;
+  
+  // Create record object
+  const record = {
+    id: Date.now().toString(),
+    desc,
+    amount: adjustedAmount,
+    type: 'person',
+    category: 'other',
+    personId: currentPersonForTransactions,
+    date: new Date().toISOString()
+  };
+  
+  // Save to localStorage
+  let users = JSON.parse(localStorage.getItem('users'));
+  users[currentUser].data.push(record);
+  localStorage.setItem('users', JSON.stringify(users));
+  
+  // Reset form
+  document.getElementById('personTransactionDesc').value = '';
+  document.getElementById('personTransactionAmount').value = '';
+  
+  // Reload transactions and show success
+  loadPersonTransactions(currentPersonForTransactions);
+  loadRecords(); // Also update main records
+  loadPeople(); // Update people balances
+  showToast('İşlem başarıyla eklendi!', 'success');
+}
+
+// Show PDF modal
+function showPdfModal() {
+  document.getElementById('pdfModal').style.display = 'flex';
+}
+
+// Generate PDF and send via WhatsApp
+function generatePdf() {
+  const companyName = document.getElementById('companyName').value || 'Şirket Adı Belirtilmemiş';
+  const companyAddress = document.getElementById('companyAddress').value || 'Adres Belirtilmemiş';
+  const companyPhone = document.getElementById('companyPhone').value || 'Telefon Belirtilmemiş';
+  
+  // In a real application, this would generate a PDF
+  // For this demo, we'll simulate the process
+  showToast('PDF oluşturuluyor ve WhatsApp ile gönderiliyor...', 'success');
+  
+  // Close modal
+  closeModal('pdfModal');
+  
+  // Simulate PDF generation and WhatsApp sharing
+  setTimeout(() => {
+    const message = `Merhaba, ${companyName} için finansal raporunuzu gönderiyorum. Ekte PDF dosyasını bulabilirsiniz.`;
+    openWhatsAppWithMessage(message);
+  }, 1500);
+}
+
+// Open WhatsApp with pre-filled message
+function openWhatsApp() {
+  const message = "Merhaba, NetMuhasebe uygulaması hakkında bilgi almak istiyorum.";
+  openWhatsAppWithMessage(message);
+}
+
+function openWhatsAppWithMessage(message) {
+  const phoneNumber = "905054315002";
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, '_blank');
+}
+
+// Add dark mode styles dynamically
+const darkModeStyles = `
+  body.dark-mode {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #e2e8f0;
+  }
+  body.dark-mode::before {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%23334155" stroke-width="0.5" opacity="0.2"/></svg>');
+  }
+  body.dark-mode .container {
+    background-color: #1e293b;
+    color: #e2e8f0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+  body.dark-mode .container:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  }
+  body.dark-mode .form-control {
+    background-color: #334155;
+    border-color: #475569;
+    color: #e2e8f0;
+  }
+  body.dark-mode .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
+  }
+  body.dark-mode .records-table {
+    color: #e2e8f0;
+  }
+  body.dark-mode .records-table th {
+    background: linear-gradient(135deg, var(--primary-dark), #0ea5e9);
+  }
+  body.dark-mode .records-table tr:nth-child(even) {
+    background-color: #334155;
+  }
+  body.dark-mode .records-table tr:hover {
+    background-color: #475569;
+  }
+  body.dark-mode .summary-card {
+    background-color: #334155;
+    color: #e2e8f0;
+  }
+  body.dark-mode .summary-card h3 {
+    color: #94a3b8;
+  }
+  body.dark-mode .empty-state i {
+    color: #475569;
+  }
+  body.dark-mode .chart-container {
+    background-color: #334155;
+  }
+  body.dark-mode .tabs {
+    border-bottom-color: #475569;
+  }
+  body.dark-mode .tab {
+    color: #cbd5e1;
+  }
+  body.dark-mode .tab:hover:not(.active) {
+    background-color: #334155;
+  }
+  body.dark-mode .tab.active {
+    background-color: rgba(37, 99, 235, 0.15);
+  }
+  body.dark-mode .person-card {
+    background-color: #334155;
+  }
+  body.dark-mode .modal-content {
+    background-color: #1e293b;
+    color: #e2e8f0;
+  }
+  body.dark-mode .person-detail label {
+    color: #94a3b8;
+  }
+  body.dark-mode .filter-controls {
+    background-color: #334155;
+  }
+  body.dark-mode .hero {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
+  }
+  body.dark-mode .feature-card {
+    background-color: #334155;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+  body.dark-mode .feature-card:hover {
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+  }
+  body.dark-mode .cta-section {
+    background: linear-gradient(135deg, var(--primary-dark), #0ea5e9);
+  }
+  body.dark-mode .btn-light {
+    background: #334155;
+    color: #e2e8f0;
+  }
+  body.dark-mode .btn-light:hover {
+    background: #475569;
+  }
+  body.dark-mode .company-info {
+    background-color: #334155;
+  }
+  body.dark-mode .pdf-preview {
+    background-color: #475569;
+    border-color: #64748b;
+  }
+  body.dark-mode .pdf-preview i {
+    color: #94a3b8;
+  }
+  body.dark-mode .transaction-form {
+    background-color: #334155;
+  }
+`;
+// Inject dark mode styles
+const styleElement = document.createElement('style');
+styleElement.textContent = darkModeStyles;
+document.head.appendChild(styleElement);
+</script>
+</body>
+</html>
